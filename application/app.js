@@ -37,17 +37,38 @@ async function main() {
     try {
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
+        
+        // Création du dossier médical du patient
+        console.log("\n=== Initialisation du dossier médical du patient ===");
+        await créerEntité(contract, 'patient1', 'Dossier Médical - Patient 1', 'Dossier initial pour le patient 1');
 
-        await initLedger(contract);
-        await créerEntité(contract, 'entite2', 'Dossier Médical B', 'Dossier de santé secondaire');
-        await créerAgent(contract, 'agent2', 'Dr. Martin', 'Médecin');
-        await créerActivité(contract, 'activite1', 'Consultation initiale', '2023-11-01T10:00:00Z');
-        await associerActivité(contract, 'entite2', 'activite1', 'agent2');
-        await modifierEntite(contract, 'entite2', 'Dossier Médical Modifié encore une fois', 'Description mise à jour');
+        // Ajout de docteurs qui vont traiter le patient
+        console.log("\n=== Ajout de docteurs ===");
+        await créerAgent(contract, 'docteur1', 'Dr. Dupont', 'Médecin Généraliste');
+        await créerAgent(contract, 'docteur2', 'Dr. Martin', 'Spécialiste Cardiologie');
+        await créerAgent(contract, 'docteur3', 'Dr. Ahmed', 'Médecin Urgentiste');
 
-        await getHistoryForAsset(contract, 'entite2');  
-        //await getHistoryForAsset(contract, 'agent2');   
-        //await getHistoryForAsset(contract, 'activite1');  
+        // Enregistrement de différentes consultations (activités) avec chaque docteur
+        console.log("\n=== Enregistrement des consultations du patient ===");
+        await créerActivité(contract, 'consultation1', 'Consultation générale', '2023-11-01T10:00:00Z');
+        await associerActivité(contract, 'patient1', 'consultation1', 'docteur1');
+
+        await créerActivité(contract, 'consultation2', 'Consultation en cardiologie', '2023-11-05T09:30:00Z');
+        await associerActivité(contract, 'patient1', 'consultation2', 'docteur2');
+
+        await créerActivité(contract, 'consultation3', 'Consultation d\'urgence', '2023-11-10T22:15:00Z');
+        await associerActivité(contract, 'patient1', 'consultation3', 'docteur3');
+
+        // Modification du dossier médical avec des informations supplémentaires après chaque consultation
+        console.log("\n=== Mise à jour du dossier médical après les consultations ===");
+        
+        await modifierEntite(contract, 'patient1', 'Dossier Médical - Patient 1', 'Consultation générale effectuée');
+        await modifierEntite(contract, 'patient1', 'Dossier Médical - Patient 1', 'Consultation cardiologique effectuée');
+        await modifierEntite(contract, 'patient1', 'Dossier Médical - Patient 1', 'Consultation d\'urgence effectuée');
+
+        // Récupération de l'historique complet du dossier médical du patient
+        console.log("\n=== Historique du dossier médical du patient ===");
+        await getHistoryForAsset(contract, 'patient1'); 
 
 
     } finally {
