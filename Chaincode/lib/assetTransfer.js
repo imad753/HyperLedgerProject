@@ -3,11 +3,10 @@
 const { Contract } = require('fabric-contract-api');
 const stringify = require('json-stringify-deterministic');
 const sortKeysRecursive = require('sort-keys-recursive');
+const crypto = require('crypto');
 
 class ProvenanceContract extends Contract {
-
-    //Initializing Ledger with some Random data
-    async InitLedger(ctx) {
+    /*async InitLedger(ctx) {
         const items = [
             { ID: 'entite1', Type: 'Dossier', Nom: 'Dossier Médical A', Description: 'Dossier de santé initial' },
             { ID: 'agent1', Type: 'Agent', Nom: 'Dr. Dupont', Role: 'Médecin' },
@@ -16,30 +15,75 @@ class ProvenanceContract extends Contract {
         for (const item of items) {
             await ctx.stub.putState(item.ID, Buffer.from(stringify(sortKeysRecursive(item))));
         }
-    }
+    }*/
+    // ***************************************************/
+    // ** Méthodes pour la Création et Modification de CDA **
+    // ***************************************************/
 
-
-//**************************************************/
-// Methods to create objects within the blockchain***
-//************************************************* */
-
-    async CréerEntité(ctx, entiteId, nom, description) {
-        const exists = await this.EntiteExists(ctx, entiteId);
+    async CreateCDA(ctx, cdaId, cdaContent, patientNom, docteurId) {
+        const exists = await this.CDAExists(ctx, cdaId);
         if (exists) {
-            throw new Error(`L'entité ${entiteId} existe déjà`);
+            throw new Error(`Le CDA ${cdaId} existe déjà`);
         }
+        const docteurAsBytes = await ctx.stub.getState(docteurId);
+        if (!docteurAsBytes || docteurAsBytes.length === 0) {
+            throw new Error(`Le docteur avec l'ID ${docteurId} n'existe pas`);
+        }
+        const docteur = JSON.parse(docteurAsBytes.toString());
+    
+        const hash = crypto.createHash('sha256').update(cdaContent).digest('hex');
+        //console.log(`Hash calculé pour le CDA ${cdaId}: ${hash}`);
 
-        const entite = {
-            ID: entiteId,
-            Type: 'Entité',
-            Nom: nom,
-            Description: description,
+        const cda = {
+            ID: cdaId,
+            Type: 'CDA',
+            Hash: hash,
+            PatientNom: patientNom,
+            DocteurId: docteur.ID,
+            DocteurNom: docteur.Nom,
+            Role: docteur.Role,
+            //Timestamp: new Date().toISOString(),
         };
-        await ctx.stub.putState(entiteId, Buffer.from(stringify(sortKeysRecursive(entite))));
-        return JSON.stringify(entite);
+        console.log('test 4');
+    
+        await ctx.stub.putState(cdaId, Buffer.from(stringify(sortKeysRecursive(cda))));
+        return JSON.stringify(cda);
     }
+    
+    async ModifyCDA(ctx, cdaId, nouveauCdaContent, patientNom, docteurId) {
+        const exists = await this.CDAExists(ctx, cdaId);
+        if (!exists) {
+            throw new Error(`Le CDA ${cdaId} n'existe pas`);
+        }
+    
+        const docteurAsBytes = await ctx.stub.getState(docteurId);
+        if (!docteurAsBytes || docteurAsBytes.length === 0) {
+            throw new Error(`Le docteur avec l'ID ${docteurId} n'existe pas`);
+        }
+        const docteur = JSON.parse(docteurAsBytes.toString());
+    
+        const nouveauHash = crypto.createHash('sha256').update(nouveauCdaContent).digest('hex');
+    
+        const cdaAsBytes = await ctx.stub.getState(cdaId);
+        const cda = JSON.parse(cdaAsBytes.toString());
+    
+        cda.Hash = nouveauHash;
+        cda.PatientNom = patientNom || cda.PatientNom;
+        cda.DocteurId = docteur.ID;
+        cda.DocteurNom = docteur.Nom;
+        cda.Role = docteur.Role;
+        //cda.Timestamp = new Date().toISOString();
+    
+        await ctx.stub.putState(cdaId, Buffer.from(stringify(sortKeysRecursive(cda))));
+        return JSON.stringify(cda);
+    }
+    
 
-    async CréerAgent(ctx, agentId, nom, role) {
+    // ***************************************************************/
+    // ** Méthodes pour la gestion des activités, history et agents **
+    // ***************************************************************/
+
+    async CreateAgent(ctx, agentId, nom, role) {
         const exists = await this.AgentExists(ctx, agentId);
         if (exists) {
             throw new Error(`L'agent ${agentId} existe déjà`);
@@ -55,7 +99,7 @@ class ProvenanceContract extends Contract {
         return JSON.stringify(agent);
     }
 
-    async CréerActivité(ctx, activiteId, description, timestamp) {
+    async CreateActivity(ctx, activiteId, description, timestamp) {
         const exists = await this.ActiviteExists(ctx, activiteId);
         if (exists) {
             throw new Error(`L'activité ${activiteId} existe déjà`);
@@ -71,48 +115,23 @@ class ProvenanceContract extends Contract {
         return JSON.stringify(activite);
     }
 
-    async AssocierActivité(ctx, entiteId, activiteId, agentId) {
-        const entite = JSON.parse((await ctx.stub.getState(entiteId)).toString());
-        const agent = JSON.parse((await ctx.stub.getState(agentId)).toString());
+    async AssociateActivity(ctx, cdaId, activiteId, docteurId) {
+        const cda = JSON.parse((await ctx.stub.getState(cdaId)).toString());
+        const docteur = JSON.parse((await ctx.stub.getState(docteurId)).toString());
         const activite = JSON.parse((await ctx.stub.getState(activiteId)).toString());
 
-        if (!entite || !agent || !activite) {
-            throw new Error(`Les identifiants fournis ne correspondent pas à une entité, un agent ou une activité existants.`);
+        if (!cda || !docteur || !activite) {
+            throw new Error(`Les identifiants fournis ne correspondent pas à un CDA, un docteur ou une activité existants.`);
         }
 
-        activite.wasGeneratedBy = entiteId;
-        activite.wasAssociatedWith = agentId;
+        activite.AssociatedWithCDA = cdaId;
+        activite.DocteurId = docteurId;
+        activite.DocteurNom = docteur.Nom;
+        activite.Role = docteur.Role;
 
         await ctx.stub.putState(activiteId, Buffer.from(stringify(sortKeysRecursive(activite))));
         return JSON.stringify(activite);
     }
-
-//**************************************************/
-// Methods to modify objects within the blockchain***
-//************************************************* */
-
-async ModifierEntite(ctx, entiteId, nouveauNom, nouvelleDescription) {
-    
-    const exists = await this.EntiteExists(ctx, entiteId);
-    if (!exists) {
-        throw new Error(`L'entité ${entiteId} n'existe pas`);
-    }
-
-    const entiteAsBytes = await ctx.stub.getState(entiteId); 
-    const entite = JSON.parse(entiteAsBytes.toString());
-
-    entite.Nom = nouveauNom || entite.Nom;  
-    entite.Description = nouvelleDescription || entite.Description;  
-
-    await ctx.stub.putState(entiteId, Buffer.from(JSON.stringify(entite)));
-    return JSON.stringify(entite);
-}
-
-
-
-//*********************************************************/
-// Methods get history of objects within the blockchain  ***
-//******************************************************* */    
 
     async GetHistoryForAsset(ctx, assetId) {
         const allResults = [];
@@ -134,15 +153,14 @@ async ModifierEntite(ctx, entiteId, nouveauNom, nouvelleDescription) {
             }
         }
     }
-    
 
-//*********************************************************/
-// Methods to verify existance  within the blockchain  ***
-//******************************************************* */  
+    // ***************************************************/
+    // ** Méthodes utilitaires pour vérifier l'existence **
+    // ***************************************************/
 
-    async EntiteExists(ctx, entiteId) {
-        const entiteJSON = await ctx.stub.getState(entiteId);
-        return entiteJSON && entiteJSON.length > 0;
+    async CDAExists(ctx, cdaId) {
+        const cdaJSON = await ctx.stub.getState(cdaId);
+        return cdaJSON && cdaJSON.length > 0;
     }
 
     async AgentExists(ctx, agentId) {
@@ -153,6 +171,14 @@ async ModifierEntite(ctx, entiteId, nouveauNom, nouvelleDescription) {
     async ActiviteExists(ctx, activiteId) {
         const activiteJSON = await ctx.stub.getState(activiteId);
         return activiteJSON && activiteJSON.length > 0;
+    }
+
+    async getAgent(ctx, agentId) {
+        const agentAsBytes = await ctx.stub.getState(agentId);
+        if (!agentAsBytes || agentAsBytes.length === 0) {
+            throw new Error(`L'agent ${agentId} n'existe pas`);
+        }
+        return JSON.parse(agentAsBytes.toString());
     }
 }
 
