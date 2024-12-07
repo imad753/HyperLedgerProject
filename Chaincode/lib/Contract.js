@@ -201,7 +201,7 @@ class ProvenanceContract extends Contract {
                         const formattedTimestamp = new Intl.DateTimeFormat('fr-FR', {
                             dateStyle: 'short',
                             timeStyle: 'medium',
-                            timeZone: 'Europe/Paris', // Remplacez par votre fuseau horaire
+                            timeZone: 'Europe/Paris', 
                         }).format(timestamp);
     
                         allResults.push({
@@ -276,7 +276,7 @@ class ProvenanceContract extends Contract {
     }*/
 
 
-    // Récupére l'historique d'un agent spécifique
+    // Récupére l'historique d'un asset spécifique
     async GetHistoryForAsset(ctx, assetId) {
         const allResults = [];
         const iterator = await ctx.stub.getHistoryForKey(assetId);
