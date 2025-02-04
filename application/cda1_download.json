@@ -1,0 +1,24 @@
+{
+  "DocteurId": "docteur1",
+  "DocteurNom": "Dr. Dupont",
+  "ID": "cda1",
+  "PROV": {
+    "wasAttributedTo": "docteur1",
+    "wasGeneratedBy": "createCDA:cda1"
+  },
+  "PatientNom": "Alice Durand",
+  "Sections": [
+    {
+      "DocteurId": "docteur2",
+      "DocteurNom": "Dr. Martin",
+      "Hash": "fb96f9d29859dcb8cb6ab6ca1281489434debf902be6634ea1a58e846d38a447",
+      "PROV": {
+        "wasAttributedTo": "docteur2",
+        "wasDerivedFrom": "af39ec8732ba1ff8861ccbce0ae6c1cff8be51771f833170ac1918b03d2e3ab7",
+        "wasGeneratedBy": "modifySection:section1"
+      },
+      "Section_ID": "section1"
+    }
+  ],
+  "Type": "CDA"
+}

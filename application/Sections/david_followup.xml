@@ -1,0 +1,10 @@
+<section>
+  <templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.4.2"/>
+  <code codeSystem="2.16.840.1.113883.6.1" code="10234-5" displayName="FOLLOW-UP DIAGNOSIS"/>
+  <title>Follow-up Diagnosis - David Moreau</title>
+  <text>
+    <paragraph>David's follow-up respiratory assessment indicates a resolution of his symptoms.</paragraph>
+    <paragraph>Chest X-ray shows clear lung fields, and his fever has subsided.</paragraph>
+    <paragraph>No further treatment is required at this time, but continued observation is advised.</paragraph>
+  </text>
+</section>

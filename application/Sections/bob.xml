@@ -1,0 +1,11 @@
+<section>
+  <templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.4.2"/>
+  <code codeSystem="2.16.840.1.113883.6.1" code="10164-2" displayName="INITIAL DIAGNOSIS"/>
+  <title>Initial Diagnosis - Bob Martin</title>
+  <text>
+    <paragraph>Bob Martin experienced chest discomfort and shortness of breath during physical exertion.</paragraph>
+    <paragraph>An initial assessment indicated signs of possible angina and elevated blood pressure.</paragraph>
+    <paragraph>Recommended tests include: ECG, stress test, and lipid profile analysis.</paragraph>
+    <paragraph>Bob was advised to consult with Dr. Martin for further cardiovascular evaluation.</paragraph>
+  </text>
+</section>

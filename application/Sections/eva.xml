@@ -1,0 +1,11 @@
+<section>
+  <templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.4.2"/>
+  <code codeSystem="2.16.840.1.113883.6.1" code="10164-2" displayName="INITIAL DIAGNOSIS"/>
+  <title>Initial Diagnosis - Eva Laurent</title>
+  <text>
+    <paragraph>Eva Laurent reported severe abdominal pain and nausea following a meal.</paragraph>
+    <paragraph>Initial examination revealed tenderness in the lower abdomen and signs of digestive distress.</paragraph>
+    <paragraph>Recommended tests: Abdominal ultrasound, blood tests, and possibly a CT scan.</paragraph>
+    <paragraph>Eva was referred to Dr. Garcia, surgical specialist, for further investigation.</paragraph>
+  </text>
+</section>

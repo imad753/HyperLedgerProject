@@ -1,0 +1,34 @@
+{
+  "DocteurId": "docteur3",
+  "DocteurNom": "Dr. Bertrand",
+  "ID": "cda3",
+  "PROV": {
+    "wasAttributedTo": "docteur3",
+    "wasGeneratedBy": "createCDA:cda3"
+  },
+  "PatientNom": "Claire Petit",
+  "Sections": [
+    {
+      "DocteurId": "docteur4",
+      "DocteurNom": "Dr. Lefevre",
+      "Hash": "3073fd711e3a9376d212dfff8e863b61dfb9910a2d3d072844b6050cf9106b1c",
+      "PROV": {
+        "wasAttributedTo": "docteur4",
+        "wasDerivedFrom": "8462012aa07f0425b402239a04c0ecbf37070ffbb2c1d2b6830a1c4465f50fa6",
+        "wasGeneratedBy": "modifySection:section1"
+      },
+      "Section_ID": "section1"
+    },
+    {
+      "DocteurId": "docteur3",
+      "DocteurNom": "Dr. Bertrand",
+      "Hash": "b6121f524cc8000b37ac9fd881501d47df72a80300bf1a42f068a64b27ed2a71",
+      "PROV": {
+        "wasAttributedTo": "docteur3",
+        "wasGeneratedBy": "createSection:section2"
+      },
+      "Section_ID": "section2"
+    }
+  ],
+  "Type": "CDA"
+}

@@ -1,0 +1,11 @@
+<section>
+  <templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.4.2"/>
+  <code codeSystem="2.16.840.1.113883.6.1" code="10164-2" displayName="INITIAL DIAGNOSIS"/>
+  <title>Initial Diagnosis - Claire Petit</title>
+  <text>
+    <paragraph>Claire Petit reported recurring migraines and blurred vision over recent months.</paragraph>
+    <paragraph>Preliminary examination suggested possible neurological issues requiring further imaging.</paragraph>
+    <paragraph>Tests recommended: MRI of the brain and a comprehensive neurological assessment.</paragraph>
+    <paragraph>Claire was referred to Dr. Bertrand, neurology specialist, for in-depth evaluation.</paragraph>
+  </text>
+</section>

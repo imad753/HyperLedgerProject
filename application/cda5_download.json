@@ -1,0 +1,34 @@
+{
+  "DocteurId": "docteur5",
+  "DocteurNom": "Dr. Garcia",
+  "ID": "cda5",
+  "PROV": {
+    "wasAttributedTo": "docteur5",
+    "wasGeneratedBy": "createCDA:cda5"
+  },
+  "PatientNom": "Eva Laurent",
+  "Sections": [
+    {
+      "DocteurId": "docteur1",
+      "DocteurNom": "Dr. Dupont",
+      "Hash": "77daad225915f3859950a847d59b810b432392c25fa1c2f13dfdcacceae237fc",
+      "PROV": {
+        "wasAttributedTo": "docteur1",
+        "wasDerivedFrom": "b0c0f663bc4d33c8f3a98705af8a0996cba63ba687cec1e8fb29063b543b7d0b",
+        "wasGeneratedBy": "modifySection:section1"
+      },
+      "Section_ID": "section1"
+    },
+    {
+      "DocteurId": "docteur5",
+      "DocteurNom": "Dr. Garcia",
+      "Hash": "8b85c617998be8937a0bdc1c11d09d3a5ac6c59afb7bc853f545bf26364ff1a2",
+      "PROV": {
+        "wasAttributedTo": "docteur5",
+        "wasGeneratedBy": "createSection:section2"
+      },
+      "Section_ID": "section2"
+    }
+  ],
+  "Type": "CDA"
+}

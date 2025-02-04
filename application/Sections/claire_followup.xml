@@ -1,0 +1,10 @@
+<section>
+  <templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.4.2"/>
+  <code codeSystem="2.16.840.1.113883.6.1" code="10234-5" displayName="FOLLOW-UP DIAGNOSIS"/>
+  <title>Follow-up Diagnosis - Claire Petit</title>
+  <text>
+    <paragraph>Claire's neurological evaluation shows a reduction in migraine frequency.</paragraph>
+    <paragraph>MRI results are stable, and no new lesions were detected.</paragraph>
+    <paragraph>Continued therapy is recommended along with periodic reassessments.</paragraph>
+  </text>
+</section>
